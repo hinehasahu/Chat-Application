@@ -22,7 +22,7 @@ export const userSignup = async (req, res) => {
       { userId: user._id, name, email },
       process.env.JWT_SECRET
     );
-    const url = `http://localhost:3000/api/users/verify/${token}`;
+    const url = `https://chat-application-mvvh.onrender.com/api/users/verify/${token}`;
     await transporter.sendMail({
       to: email,
       subject: "Verify Email",
@@ -105,7 +105,7 @@ export const forgotPassword = async (req, res) => {
       }
     );
 
-    const url = `http://localhost:3000/api/users/reset-password/${token}`;
+    const url = `https://chat-application-mvvh.onrender.com/api/users/reset-password/${token}`;
     await transporter.sendMail({
       to: email,
       subject: "Reset Password",
