@@ -21,7 +21,7 @@ const UserSearch = ({ onSelectUser }) => {
 
   const handleSearch = async () => {
     try {
-      const res = await axios.get(`https://chattr-app.onrender.com/api/users/search?query=${searchQuery}`, {
+      const res = await axios.get(`https://chat-application-mvvh.onrender.com/api/users/search?query=${searchQuery}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setResults(res.data);

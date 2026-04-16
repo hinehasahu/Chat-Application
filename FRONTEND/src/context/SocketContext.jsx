@@ -7,15 +7,18 @@ export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
+
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [chatUser, setChatUser] = useState(null);
+
   const [isTyping, setIsTyping] = useState(false);
-  const [typingChatId, setTypingChatId] = useState(null);
+  const [typingChatId, setTypingChatId] = useState({});
+  
   const token = localStorage.getItem("token");
   let typingTimeout = useRef(null);
-  const API = `https://chattr-app.onrender.com`;
+  const API = `https://chat-application-mvvh.onrender.com`;
 
   const getChatIdFromURL = () => {
     const pathParts = window.location.pathname.split("/");
@@ -44,35 +47,50 @@ export const SocketProvider = ({ children }) => {
       setOnlineUsers((prev) => prev.filter((id) => id !== userId));
     });
 
+    // newSocket.on("typing", ({ chatId: incomingChatId }) => {
+    //   const currentChatId = getChatIdFromURL();
+    //   setTypingChatId(incomingChatId);
+
+    //   if (incomingChatId === currentChatId) {
+    //     setIsTyping(true);
+
+    //     if (typingTimeout.current) clearTimeout(typingTimeout.current);
+
+    //     typingTimeout.current = setTimeout(() => {
+    //       setIsTyping(false);
+    //       setTypingChatId(null);
+    //     }, 2000);
+    //   }else{
+    //     setIsTyping(true)
+    //   }
+    // });
+
+    // newSocket.on("stop typing", ({chatId: incomingChatId}) =>{
+    //   const currentChatId = getChatIdFromURL();
+
+    //   if(incomingChatId !== currentChatId){
+    //     setIsTyping(false);
+    //     setTypingChatId(null)
+    //   }
+    // })
+
     newSocket.on("typing", ({ chatId: incomingChatId }) => {
-      const currentChatId = getChatIdFromURL();
-      setTypingChatId(incomingChatId);
-      
-      if (incomingChatId === currentChatId) {
-        setIsTyping(true);
+      setTypingChatId((prev) => ({ ...prev, [incomingChatId]: true }));
 
-        if (typingTimeout.current) clearTimeout(typingTimeout.current);
-
-        typingTimeout.current = setTimeout(() => {
-          setIsTyping(false);
-          setTypingChatId(null);
-        }, 2000);
-      }else{
-        setIsTyping(true)
-      }
+      // If typing stops after 2s
+      if (typingTimeout.current) clearTimeout(typingTimeout.current);
+      typingTimeout.current = setTimeout(() => {
+        setTypingChatId((prev) => ({ ...prev, [incomingChatId]: false }));
+      }, 2000);
     });
 
-    newSocket.on("stop typing", ({chatId: incomingChatId}) =>{
-      const currentChatId = getChatIdFromURL();
-
-      if(incomingChatId !== currentChatId){
-        setIsTyping(false);
-        setTypingChatId(null)
-      }
-    })
+    newSocket.on("stop typing", ({ chatId: incomingChatId }) => {
+      setTypingChatId((prev) => ({ ...prev, [incomingChatId]: false }));
+    });
 
     // Message handling
     newSocket.on("receive-message", ({ from, message }) => {
+      console.log("Received: ", message)
       setMessages((prev) => [
         ...prev,
         { sender: { _id: from }, content: message, createdAt: new Date() },
@@ -85,7 +103,7 @@ export const SocketProvider = ({ children }) => {
       newSocket.off("user-online");
       newSocket.off("user-offline");
       newSocket.off("typing");
-      newSocket.off("stop typing")
+      newSocket.off("stop typing");
       newSocket.off("receive-message");
       if (typingTimeout.current) clearTimeout(typingTimeout.current);
     };
@@ -129,9 +147,9 @@ export const SocketProvider = ({ children }) => {
 
       if (typingTimeout.current) clearTimeout(typingTimeout.current);
 
-      typingTimeout.current = setTimeout(()=>{
-        socket.emit("stop typing", {chatId} )
-      }, 2000)
+      typingTimeout.current = setTimeout(() => {
+        socket.emit("stop typing", { chatId });
+      }, 2000);
     }
   };
 
@@ -152,6 +170,7 @@ export const SocketProvider = ({ children }) => {
         sendMessage,
         handleTyping,
         typingChatId,
+        getChatIdFromURL,
       }}>
       {children}
     </SocketContext.Provider>

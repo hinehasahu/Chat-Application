@@ -1,0 +1,88 @@
+
+.logo{
+    max-width: 20rem;
+}
+.welcome{
+  color: #f1a223;
+}
+.signupbtn{
+  background-color: #fff2dc;
+  padding: 0.6rem 1.6rem;
+  border-radius: 8px;
+  border: 2px solid #f6d9aa;
+}
+.loginbtn{
+  background-color: #fedae6;
+  padding: 0.6rem 1.6rem;
+  border-radius: 8px;
+  border: 2px solid #fca9c5;
+}
+.logname{
+  color: #f1a223;
+}
+.logoname{
+  color: #fc3d7d;
+}
+.btn{
+  width: 100%;
+  border: 1px solid #f1a223;
+  background-color: #fff2dc;
+}
+.input{
+  border: 1px solid #f1a223;
+}
+.dashboardhead{
+  background-color: #fff2dc;
+}
+.active{
+  background-color: #fc3d7d;
+}
+.nonactive{
+  background-color: #fff2dc;
+}
+.dashhead{
+  background-color: #ffeaf1;
+  padding: 0.8rem 0;
+}
+/* .dashboard{
+  background-color: #ffeaf1;
+} */
+ .sendbtn{
+  background-color: #fc3d7d;
+ }
+ .sender{
+  background-color: #ffeaf1;
+ }
+ .receiver{
+  background-color: #fff2dc;
+ }
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  body {
+    font-size: 16px;
+  }
+  .container {
+    max-width: 90%;
+  }
+  .logo{
+    max-width: 24rem;
+  }
+  .logoimg{
+    width: 2.8rem;
+  }
+}
+
+
+@media (max-width: 1025px) {
+  body {
+    font-size: 18px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .logo{
+    width: 24rem;
+  }
+}

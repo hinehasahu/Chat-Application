@@ -10,7 +10,7 @@ const ResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(`https://chattr-app.onrender.com/api/users/reset-password/${token}`, { password });
+      const { data } = await axios.post(`https://chat-application-mvvh.onrender.com/api/users/reset-password/${token}`, { password });
       setMessage(data.message);
     } catch (err) {
       setMessage('Something went wrong');

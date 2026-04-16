@@ -3,6 +3,7 @@ import { useSocket } from "../context/SocketContext";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import EmojiPicker from "emoji-picker-react";
+import { IoSend } from "react-icons/io5";
 
 function TypingInput() {
   const { user } = useAuth();
@@ -15,8 +16,8 @@ function TypingInput() {
   };
 
   return (
-    <div className="flex flex-col relative mb-2">
-      <div className="flex mt-4 items-center ">
+    <div className="sticky bottom-0 bg-white p-2 border-t z-20">
+      <div className="flex items-center ">
         <input
           type="text"
           value={newMessage}
@@ -25,7 +26,7 @@ function TypingInput() {
             handleTyping(chatId);
           }}
           placeholder="Type your message..."
-          className="flex-1 border p-2 rounded-l"
+          className="input flex-1 border p-2 rounded-l"
         />
         <button
           onClick={() => setShowEmojiPicker(!showEmojiPicker)}
@@ -34,8 +35,8 @@ function TypingInput() {
         </button>
         <button
           onClick={() => sendMessage(chatId, user)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-r">
-          Send
+          className="sendbtn text-white px-4 py-2 rounded-r">
+          <IoSend />
         </button>
       </div>
       
